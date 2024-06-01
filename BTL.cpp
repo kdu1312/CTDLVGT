@@ -135,7 +135,8 @@ void insertBeforeSV(LinkedList& H, PNodeSV P, long mssv, const char* hoTen, cons
     }
 }
 
-void display(LinkedList H) {
+void displaySV
+(LinkedList H) {
     PNodeSV P = H;
     while (P != nullptr) {
         cout << P->getMSSV() << "  " << P->getHoTen() << "  " << P->getEmail() << endl;
