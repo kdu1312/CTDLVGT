@@ -58,6 +58,9 @@ public:
     NodeSV* getNext() const { return next; }
     void setNext(NodeSV* nextNode) { next = nextNode; }
 
+    //Trả về con trỏ trỏ vào thời khóa biểu
+    NodeTKB* getTKB() const { return TKB; }
+    void setTKB(NodeTKB* tkb) { TKB = tkb; } 
     SinhVien& getData() { return data; }
 };
 
@@ -93,6 +96,22 @@ public:
         strcpy(this->PhongHoc, PhongHoc);
         strcpy(this->Kihoc, Kihoc);
     }
+
+    NodeTKB* getNext() const { return next; }
+    void setNext(NodeTKB* nextNode ){ next = nextNode; } 
+
+    HocPhan& getData() { return data; }
+    int getThu() const { return Thu ; }
+    int getStart() const { return Start; }
+    int getEnd() const { return End; }
+    int getTuan() const { return Tuan; }
+    const char* getPhongHoc() const { return PhongHoc; }
+    const char* getKihoc() const { return Kihoc; }
+
+
+
+
+
 };
 
 typedef NodeSV* LinkedList;
@@ -236,10 +255,65 @@ PNodeHP deleteHocPhan(LinkedListHP& H, const char* MaHP){
         R = P;
         P = P ->getNext();
     }
-    if (R == NULL){
+    if (P == NULL ) { "Khong tim thay mon hoc\n";}
+    if (R == NULL){ // Trường hợp P ở đầu danh sách 
         H = P->getNext();
     } else {
         R->setNext(P->getNext());
     }
     delete P;
+}
+
+// Thời Khóa Biểu
+// Thêm Học Phần vào Thời Khóa Biểu của 1 sinh viên
+void ThemHP(PNodeSV SV, const char* MaHP, const char* TenHP, int Tinchi, int Thu, int Start, int End, int Tuan, const char* PhongHoc, const char* Kihoc){
+    PNodeTKB P = new NodeTKB (MaHP, TenHP, Tinchi, Thu, Start, End, Tuan, PhongHoc, Kihoc);
+    if(SV->getTKB() == NULL){ // Không có môn học nào trong TKB thêm môn P vào
+        SV->setTKB(P);
+    } else {  // có môn học
+        PNodeTKB Q = SV->getTKB(); // cho Q chạy hết danh sách TKB
+        while (Q->getNext() != NULL){
+            Q = Q->getNext();
+        }
+        Q ->setNext(P);
+    }
+}
+// Tìm học phần trong TKB trả về con trỏ trỏ vào HP đó
+PNodeTKB searchTKB  (PNodeSV SV, const char* MaHP){
+    PNodeTKB P = SV->getTKB(); //Cho P chạy 
+    while (P != NULL ){
+        if(strcmp(P->getData().getMaHP(), MaHP) == 0){ // 2 chuỗi giống nhau
+            return P;
+        } P = P->getNext();
+    }
+    // Không tìm thấy
+    return NULL;
+}
+
+// Xóa học phần trong tkb của Sinh Viên
+void DeleteTKB(PNodeSV& SV, const char* MaHP){
+    PNodeTKB P = SV->getTKB();
+    PNodeTKB R = NULL;
+    while (P != NULL &&  strcmp(P->getData().getMaHP(), MaHP) != 0){
+        R = P;
+        P = P ->getNext();
+    }
+    if ( P == NULL ) { cout << "Khong tim thay\n"; }
+    if (R == NULL){ // P ở đầu danh sách
+        SV->setTKB(P->getNext());
+    } else {
+        R->setNext(P->getNext());
+    }
+    delete P;
+}
+
+//Hiển thị ra màn hình thời khóa biểu 
+void displayTKB(PNodeSV SV){
+    PNodeTKB P = SV->getTKB();
+    while (P != NULL ){
+        cout << P->getData().getMaHP() << " " << P ->getData().getTenHP() << " " << P->getData().getTinchi() << " ";
+        cout << P->getThu() << " " << P->getStart() << " " << P->getEnd() << " " << P->getTuan() << " ";
+        cout << P->getPhongHoc() << " " << P->getKihoc() << endl;
+        P = P->getNext();
+    }
 }
