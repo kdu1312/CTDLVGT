@@ -9,21 +9,10 @@ struct SinhVien {
     char email[100];
 };
 
-struct HocPhan {
-    char MaHP[100];
-    char TenHP[100];
-    int Tinchi;
-};
-
 struct NodeSV {
     SinhVien data;
     NodeSV* next;
     NodeTKB* TKB;
-};
-
-struct NodeHP {
-    HocPhan data;
-    NodeHP* next;
 };
 
 typedef NodeSV* LinkedListSV;
