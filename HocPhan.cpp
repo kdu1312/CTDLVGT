@@ -8,7 +8,7 @@ struct HocPhan {
 
 struct NodeHP {
     HocPhan data;
-    NodeHP* next;
+    PNodeHP next;
 };
 
 typedef NodeHP* PNodeHP;
@@ -55,32 +55,32 @@ void InsertHPAfter(LinkedListHP& H, const char* targetMaHP, const char* maHP, co
 }
 
 void InsertHPBefore(LinkedListHP& H, const char* targetMaHP, const char* maHP, const char* tenHP, int tinchi) {
-// PNode P = searchHP (H, targetMAHP);
-//     PNode Q = new NodeHP;
-//     Q->data.Tinchi = tinchi;
-//     strcpy(Q->data.MaHP, maHP);
-//     strcpy(Q->data.TenHP, tenHP);
-//     if (strcmp(H->data.MaHP, targetMaHP) == 0) {
-//         InsertHPBegin(H, maHP, tenHP, tinchi);
-//         return;
-//     }
+    PNode P = searchHP (H, targetMAHP);
+    PNode Q = new NodeHP;
+    Q->data.Tinchi = tinchi;
+    strcpy(Q->data.MaHP, maHP);
+    strcpy(Q->data.TenHP, tenHP);
+    if (strcmp(H->data.MaHP, targetMaHP) == 0) {
+        InsertHPBegin(H, maHP, tenHP, tinchi);
+        return;
+     }
 
-    // NodeHP* prev = NULL;
-    // NodeHP* P = H;
+    NodeHP* prev = NULL;
+    NodeHP* P = H;
 
-    // while (P != NULL && strcmp(P->data.MaHP, targetMaHP) != 0) {
-    //     prev = P;
-    //     P = P->next;
-    // }
+    while (P != NULL && strcmp(P->data.MaHP, targetMaHP) != 0) {
+        prev = P;
+        P = P->next;
+    }
 
-    // if (P != NULL) {
-    //     NodeHP* newNode = new NodeHP;
-    //     strcpy(newNode->data.MaHP, maHP);
-    //     strcpy(newNode->data.TenHP, tenHP);
-    //     newNode->data.Tinchi = tinchi;
-    //     prev->next = newNode;
-    //     newNode->next = P;
-    // }
+    if (P != NULL) {
+        PNodeHP newNode = new NodeHP;
+        strcpy(newNode->data.MaHP, maHP);
+        strcpy(newNode->data.TenHP, tenHP);
+        newNode->data.Tinchi = tinchi;
+        prev->next = newNode;
+        newNode->next = P;
+    }
 }
 
 PNodeHP searchHP(LinkedListHP H, const char* MaHP) {
