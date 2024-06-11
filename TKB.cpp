@@ -1,112 +1,119 @@
 #include "header.h"
 #include "TKB.h"
 
-// Hàm kiểm tra học phần đã tồn tại trong TKB hay chưa
-bool hocPhanDaTonTaiTrongFile(const char* MaHP) {
-    ifstream file("TKB.txt");
-    if (!file.is_open()) {
-        cout << "Không thể mở file!" << endl;
-        return false;
+//Kiểm tra trùng lịch
+bool KiemTraTrungLich(PNodeTKB tkb, const TKB& tkbMoi){
+    PNodeTKB P = tkb; // cho P chạy để tìm ra
+    while (P != nullptr){
+        if(P->data.Thu == tkb->data.Thu && tkbMoi.Start < P->data.End && tkbMoi.End > P->data.Start )
+        return 1; // trùng lịch
+        P = P->next;
+    } 
+    return 0;
+}
+
+//Hàm đọc TKB từ file MaLop cho trước
+void DocTKB(DSTKB& tkb, const char* MaLop){
+    ifstream file_TKB;
+    int vitriLop = 0;
+    // Mở file chứa tài khoản và mật khẩu có sẵn
+    file_TKB.open("tkb.txt");
+    if (!file_TKB.is_open()) {
+        cout << "Khong the mo file tkb.txt" << endl;
+        return -1;
     }
-
-    char fileMaHP[100];
-    char fileTenHP[100];
-    int fileTinchi;
-
-    while (file >> fileMaHP >> fileTenHP >> fileTinchi) {
-        if (strcmp(fileMaHP, MaHP) == 0) {
-            file.close();
-            return true; // Học phần đã tồn tại trong file
+    file_TKB >> tkb.n;
+    tkb.a = new TKB[tkb.n];
+    for(int i = 0; i < tkb.n ; i++){
+        if(tkb.a[i].MaLop == MaLop){
+            vitriLop = i;
         }
     }
+    getline(file_TKB, tkb.a[vitriLop].MaLop, '#');
+    getline(file_TKB, tkb.a[vitriLop].data.MaHP, '#');
+    getline(file_TKB, tkb.a[vitriLop].data.TenHP, '#');
+    getline(file_TKB, tkb.a[vitriLop].data.Tinchi, '#');
+    getline(file_TKB, tkb.a[vitriLop].Thu, '#');
+    getline(file_TKB, tkb.a[vitriLop].Start, '#');
+    getline(file_TKB, tkb.a[vitriLop].End, '#');
+    getline(file_TKB, tkb.a[vitriLop].PhongHoc, '#');
 
-    file.close();
-    return false; // Học phần không tồn tại trong file
+    file_TKB.close();
 }
 
-// Hàm thêm học phần vào TKB của sinh viên
-void themHocPhanVaoTKB(PNodeSV sv, const char* MaHP, const char* TenHP, int Tinchi) {
-    // Kiểm tra học phần đã tồn tại trong TKB hay chưa
-    if (hocPhanDaTonTaiTrongFile(MaHP)) {
-        cout << "Học phần đã tồn tại trong thời khóa biểu của sinh viên." << endl;
+// Hàm thêm 1 lớp vào TKB của Sinh viên
+PNodeTKB ThemHP(PNodeSV sv, const TKB& tkbMoi){
+    if (KiemTraTrungLich(sv->TKB, tkbMoi)) {
+        cout << "Lớp học mới trùng lịch với một lớp học đã có." << endl;
         return;
     }
-
-    // Thêm học phần mới vào TKB
-    PNodeTKB P = new NodeTKB();
-    P->next = sv->TKB;
+    PNodeTKB P = new NodeTKB;
+    P->data = tkbMoi;
+    P->next =sv->TKB;
     sv->TKB = P;
-
-    cout << "Đã thêm học phần vào thời khóa biểu của sinh viên." << endl;
+    cout << "Đã thêm lớp học vào thời khóa biểu của sinh viên." << endl;
 }
 
-// Hàm tìm học phần theo mã học phần
-PNodeTKB timHocPhanTheoMaHP(PNodeSV sv, const char* MaHP) {
-    PNodeTKB P = sv->TKB;
+
+
+// Hàm tìm lớp học theo mã lớp học
+PNodeTKB TimLopHoc(PNodeSV sv, const char* MaLop) {
+    PNodeTKB P = sv->TKB; // tạo 1 node P cho chạy
     while (P != nullptr) {
-        if (strcmp(P->data.data.MaHP, MaHP) == 0) {
+        if (strcmp(P->data.MaLop, MaLop) == 0) {
             return P;
         }
         P = P->next;
     }
     return nullptr;
 }
-
-// Hàm xóa học phần theo mã học phần
-void xoaHocPhanTheoMaHP(PNodeSV sv, const char* MaHP) {
-    PNodeTKB Q = nullptr;
+// Hàm xóa lớp học theo mã lớp học
+void XoaLopHoc(PNodeSV sv, const char* MaLop) {
+    PNodeTKB Q = nullptr; 
     PNodeTKB P = sv->TKB;
 
     while (P != nullptr) {
-        if (strcmp(P->data.data.MaHP, MaHP) == 0) {
+        if (strcmp(P->data.MaLop, MaLop) == 0) {
             if (Q == nullptr) {
                 sv->TKB = P->next;
             } else {
                 Q->next = P->next;
             }
-            delete Q;
-            cout << "Đã xóa học phần khỏi thời khóa biểu của sinh viên." << endl;
+            delete P;
+            cout << "Đã xóa lớp học khỏi thời khóa biểu của sinh viên." << endl;
             return;
         }
         Q = P;
-        Q = Q->next;
+        P = P->next;
     }
 
-    cout << "Không tìm thấy học phần cần xóa trong thời khóa biểu của sinh viên." << endl;
+    cout << "Không tìm thấy lớp học cần xóa trong thời khóa biểu của sinh viên." << endl;
 }
 
-// Hàm đăng ký học phần
-void dangKyHocPhan(PNodeSV sv, const char* MaHP, const char* TenHP, int Tinchi) {
-    // Thêm học phần vào TKB của sinh viên
-    themHocPhanVaoTKB(sv, MaHP, TenHP, Tinchi);
+void inThoiKhoaBieu(PNodeSV sv) { // sau dùng display của Học Phần
+    PNodeTKB P = sv->TKB ;
 
-    // Lưu thông tin học phần vào file
-    ofstream file("TKB.txt", ios::app);
-    if (!file.is_open()) {
-        cout << "Không thể mở file!" << endl;
+    if (P == nullptr) {
+        cout << "Thời khóa biểu của sinh viên không có môn học nào." << endl;
         return;
     }
 
-    file << MaHP << " " << TenHP << " " << Tinchi << endl;
-    file.close();
-}
+    cout << "Thời khóa biểu của sinh viên:" << endl;
+    cout << "--------------------------------------------" << endl;
+    cout << "| MaHP |     TenHP     | Tinchi | Thu | Start | End | Tuan |  PhongHoc  |  Kihoc  |" << endl;
+    cout << "--------------------------------------------" << endl;
 
-// Hàm in thời khóa biểu từ file 
-void inTKBtuFile(PNodeSV sv) {
-    ifstream file("TKB.txt");
-    if (!file.is_open()) {
-        cout << "Không thể mở file!" << endl;
-        return;
+    while (P != nullptr) {
+        cout << "| " << P->data.data.MaHP;
+        cout << "| " << P->data.data.TenHP;
+        cout << "| " << P->data.data.Tinchi;
+        cout << "| " << P->data.Thu;
+        cout << "| " << P->data.Start;
+        cout << "| " << P->data.End;
+        cout << "| " << P->data.Tuan;
+        cout << "| " << P->data.PhongHoc;
+        cout << "| " << P->data.Kihoc << "|" << endl;
+        P = P->next;
     }
-
-    char MaHP[100];
-    char TenHP[100];
-    int Tinchi;
-
-    while (file >> MaHP >> TenHP >> Tinchi) {
-         cout << "Mã học phần: " << MaHP << ", Tên học phần: " << TenHP << ", Số tín chỉ: " << Tinchi << endl;
-    }
-
-    file.close();
-    cout << "Đã thêm các học phần từ file vào thời khóa biểu của sinh viên." << endl;
+    cout << "--------------------------------------------" << endl;
 }
