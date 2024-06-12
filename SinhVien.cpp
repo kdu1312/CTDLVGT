@@ -9,11 +9,9 @@ int isEmpty(LinkedListSV H) {
     return (H == NULL);
 }
 
-void insertBeginSV(LinkedListSV& H, long mssv, const char* hoTen, const char* email) {
+void insertBeginSV(LinkedListSV& H, SinhVien& sv) {
     PNodeSV Q = new NodeSV;
-    Q->data.mssv = mssv;
-    strcpy(Q->data.hoTen, hoTen);
-    strcpy(Q->data.email, email);
+    Q->data = sv;
     if (isEmpty(H)) {
         Q->next = NULL;
         H = Q;
@@ -24,12 +22,10 @@ void insertBeginSV(LinkedListSV& H, long mssv, const char* hoTen, const char* em
     }
 }
 
-void insertAfterSV(LinkedListSV& H, long mssvtarget, long mssv, const char* hoTen, const char* email) {
+void insertAfterSV(LinkedListSV& H, long mssvtarget, SinhVien& sv) {
     PNodeSV P = searchSV(H, mssvtarget);
     PNodeSV Q = new NodeSV;
-    Q->data.mssv = mssv;
-    strcpy(Q->data.hoTen, hoTen);
-    strcpy(Q->data.email, email);
+    Q->data = sv;
     if (isEmpty(H)) {
         Q->next = NULL;
         H = Q;
@@ -42,23 +38,17 @@ void insertAfterSV(LinkedListSV& H, long mssvtarget, long mssv, const char* hoTe
     }
 }
 
-void insertBeforeSV(LinkedListSV& H, long mssvtarget, long mssv, const char* hoTen, const char* email) {
+void insertBeforeSV(LinkedListSV& H, long mssvtarget, SinhVien& sv) {
     PNodeSV P = searchSV(H, mssvtarget);
     PNodeSV Q = new NodeSV;
-    Q->data.mssv = mssv;
-    strcpy(Q->data.hoTen, hoTen);
-    strcpy(Q->data.email, email);
+    Q->data = sv;
     if (isEmpty(H)) {
         Q->next = NULL;
         H = Q;
     }
     if (P != NULL) {
-        Q->data.mssv = P->data.mssv;
-        strcpy(Q->data.hoTen, P->data.hoTen);
-        strcpy(Q->data.email, email);
-        P->data.mssv = mssv;
-        strcpy(P->data.hoTen, hoTen);
-        strcpy(Q->data.email, email);
+        Q->data = P->data;
+        P->data = sv;
         Q->next = P->next;
         P->next = Q;
     }
