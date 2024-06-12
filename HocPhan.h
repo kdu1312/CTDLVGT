@@ -13,21 +13,21 @@ struct NodeHP {
 };
 
 typedef NodeHP* PNodeHP;
-typedef NodeSV* LinkedListHP;
+typedef NodeHP* LinkedListHP;
 
 void InitListHP(LinkedListHP& H);
 
 int isEmptyHP(LinkedListHP H);
 
-void InsertHPBegin(LinkedListHP& H, const char* maHP, const char* tenHP, int tinchi);
+void InsertHPBegin(LinkedListHP& H, HocPhan& hp);
 
-void InsertHPAfter(LinkedListHP& H, const char* targetMaHP, const char* maHP, const char* tenHP, int tinchi);
+void InsertHPAfter(LinkedListHP& H, const char* targetMaHP, HocPhan& hp); // thêm học phần vào sau một học phần có mahp cho trước
 
-void InsertHPBefore(LinkedListHP& H, const char* targetMaHP, const char* maHP, const char* tenHP, int tinchi);
-
-PNodeHP searchHP(LinkedListHP H, const char* MaHP);
+void InsertHPBefore(LinkedListHP& H, const char* targetMaHP, HocPhan& hp);
 
 void deleteHocPhan(LinkedListHP& H, const char* MaHP);
+
+PNodeHP searchHP(LinkedListHP H, const char* MaHP);
 
 void display(LinkedListHP H);
 
