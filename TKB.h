@@ -1,5 +1,6 @@
-#pragma once
+//#pragma once
 #include "HocPhan.h"
+#include "tkb.txt"
 
 struct TKB {
     HocPhan data;
@@ -8,8 +9,12 @@ struct TKB {
     int Tuan;
     char PhongHoc[100];
     char Kihoc[100];
-    long MaLop;
+    char MaLop[100];
 };
+struct DSTKB{
+    TKB *a;
+    int n; 
+}
 
 struct NodeTKB {
     TKB data;
@@ -17,23 +22,16 @@ struct NodeTKB {
 };
 
 typedef NodeTKB* PNodeTKB;
-typedef NodeTKB* LinkedListTKB;
 
-void InitListTKB(LinkedListTKB& H); //khởi tạo danh sách sinh viên
+// Hàm thêm lớp học vào TKB của sinh viên
+PNodeTKB ThemHP(PNodeSV sv, const TKB& tkbMoi);
 
-int isEmptyTKB(LinkedListTKB H); //kiểm tra rỗng danh sách sinh viên
+// Hàm xóa 1 lớp theo mã lớp học
+void XoaLopHoc(PNodeSV sv, const char* MaLop);
 
-void insertBeginTKB(LinkedListTKB& H, long MaLop, TKB& TKB); //Thêm 1 sinh viên vào đầu danh sách
+// Hàm tìm lớp theo mã lớp học
+PNodeTKB TimLopHoc(PNodeSV sv, const char* MaLop);
 
-void insertAfterTKB(LinkedListTKB& H, long MaLop, TKB& TKB); //Thêm 1 sinh viên vào sau một sinh viên có mssv cho trước
-
-void insertBeforeTKB(LinkedListTKB& H, long MaLop, TKB& TKB);//Thêm 1 sinh viên vào trước một sinh viên có mssv cho trước
-
-PNodeTKB searchTKB(LinkedListTKB H, long MaLop); //Tìm kiếm sinh viên có mssv cho trước
-
-void DelectTKB (LinkedListTKB H, long Malop); //Xóa sinh viên có mssv cho trước
-
-void displayTKB(LinkedListTKB H); //Hiển thị danh sách sinh viên
-
-void DangkyTKB (LinkedListSV& H, long mssv, long MaLop);
+// Hàm in thời khóa biểu
+void inThoiKhoaBieu(PNodeSV sv);
 
