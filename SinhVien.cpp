@@ -92,3 +92,42 @@ void displaySV(LinkedListSV H) {
         P = P->next;
     }
 }
+
+void setINFO(SinhVien& sv, long MSSV, string& pass, int id) {
+    fstream link;
+    std::string temp[100];
+    int n = 0;
+
+    // Mở tệp info.txt để đọc thông tin
+    link.open("info.txt", ios::in);
+    if (!link.is_open()) {
+        cerr << "Khong mo duoc file info.txt" << endl;
+        return;
+    }
+
+    // Đọc dữ liệu từ tệp vào mảng temp
+    while (link >> temp[n] && n < 100) {
+        n++;
+    }
+    link.close();
+
+    // Cập nhật thông tin sinh viên tại vị trí id
+    if (id >= 0 && id < n) {
+        temp[id] = MSSV + " " + pass;
+    } else {
+        cerr << "ID khong hop le" << endl;
+        return;
+    }
+
+    // Ghi lại dữ liệu đã cập nhật vào tệp info.txt
+    link.open("info.txt", ios::out | ios::trunc);
+    if (!link.is_open()) {
+        cerr << "Khong mo duoc file info.txt" << endl;
+        return;
+    }
+
+    for (int i = 0; i < n; i++) {
+        link << temp[i] << endl;
+    }
+    link.close();
+}
