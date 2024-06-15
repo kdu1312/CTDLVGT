@@ -33,4 +33,4 @@ void DelectSV (LinkedListSV H, long mssv); //Xóa sinh viên có mssv cho trư�
 
 void displaySV(LinkedListSV H); //Hiển thị danh sách sinh viên
 
-void setINFO(SinhVien& sv, long MSSV, string& pass, int id);
+void setINFO(string MSSV, string& pass);
