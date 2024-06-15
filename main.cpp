@@ -23,5 +23,7 @@ int main() {
     InsertHPBegin (HP, hp1);
     InsertHPBegin (HP, hp2);
     InsertHPBegin (HP, hp3);
+
+    void menu();
 }
     
