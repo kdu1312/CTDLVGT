@@ -1,6 +1,7 @@
 //#pragma once
 #include "HocPhan.h"
 #include "tkb.txt"
+#include "SinhVien.h"
 
 struct TKB {
     HocPhan data;
@@ -12,9 +13,9 @@ struct TKB {
     char MaLop[100];
 };
 struct DSTKB{
-    TKB *a;
-    int n; 
-}
+   TKB *a;
+   int n; 
+};
 
 struct NodeTKB {
     TKB data;
@@ -24,7 +25,7 @@ struct NodeTKB {
 typedef NodeTKB* PNodeTKB;
 
 // Hàm thêm lớp học vào TKB của sinh viên
-PNodeTKB ThemHP(PNodeSV sv, const TKB& tkbMoi);
+PNodeTKB ThemHPX(PNodeSV sv, const TKB& tkbMoi);
 
 // Hàm xóa 1 lớp theo mã lớp học
 void XoaLopHoc(PNodeSV sv, const char* MaLop);
