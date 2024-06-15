@@ -1,6 +1,5 @@
 #include "header.h"
 #include "TKB.h"
-#include "SinhVien.h"
 
 // Kiểm tra trùng lịch
 bool KiemTraTrungLich(PNodeTKB tkb, const TKB& tkbMoi) {
