@@ -50,6 +50,7 @@ using namespace std;
             }
             cout << "\n\tSai mat khau hoac tai khoan. Vui long thu lai.\n";
         }
+         void menu1();
         return vitri;
     }
 
