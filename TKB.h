@@ -1,4 +1,4 @@
-//#pragma once
+#pragma once
 #include "HocPhan.h"
 #include "tkb.txt"
 #include "SinhVien.h"
@@ -25,7 +25,7 @@ struct NodeTKB {
 typedef NodeTKB* PNodeTKB;
 
 // Hàm thêm lớp học vào TKB của sinh viên
-PNodeTKB ThemHPX(PNodeSV sv, const TKB& tkbMoi);
+PNodeTKB ThemHP(PNodeSV sv, const TKB& tkbMoi);
 
 // Hàm xóa 1 lớp theo mã lớp học
 void XoaLopHoc(PNodeSV sv, const char* MaLop);
@@ -35,4 +35,3 @@ PNodeTKB TimLopHoc(PNodeSV sv, const char* MaLop);
 
 // Hàm in thời khóa biểu
 void inThoiKhoaBieu(PNodeSV sv);
-
