@@ -1,5 +1,5 @@
 #include "header.h"
-#include "SinhVien.h"
+//#include "SinhVien.h"
 #include "HocPhan.h"
 
 void InitListHP(LinkedListHP& H) {

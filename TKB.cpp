@@ -1,64 +1,56 @@
 #include "header.h"
 #include "TKB.h"
+#include "SinhVien.h"
 
-// Kiểm tra trùng lịch
-bool KiemTraTrungLich(PNodeTKB tkb, const TKB& tkbMoi) {
-    PNodeTKB P = tkb; 
-    while (P != nullptr) {
-        if (P->data.Thu == tkbMoi.Thu && tkbMoi.Start < P->data.End && tkbMoi.End > P->data.Start) {
-            return true; // trùng lịch
-        }
-        P = P->next;
-    }
-    return false;
+// Kiểm tra xem hai khoảng thời gian có trùng nhau hay không
+bool isOverlapping(int newStart, int newEnd, int existingStart, int existingEnd) {
+    return (newStart < existingEnd && newEnd > existingStart);
 }
 
-// Hàm đọc TKB từ file MaLop cho trước
-void DocTKB(DSTKB& tkb, const char* MaLop) {
-    ifstream file_TKB;
-    int vitriLop = 0;
-    // Mở file chứa tài khoản và mật khẩu có sẵn
-    file_TKB.open("tkb.txt");
-    if (!file_TKB.is_open()) {
-        cout << "Không thể mở file tkb.txt" << endl;
+// Hàm kiểm tra xem lớp học có trùng thời gian hay không
+bool KiemTraTrungLich(PNodeTKB head, const TKB& tkbMoi) {
+    PNodeTKB current = head;
+    while (current != nullptr) {
+        if (current->data.Thu == tkbMoi.Thu &&
+            isOverlapping(tkbMoi.Start, tkbMoi.End, current->data.Start, current->data.End)) {
+            return true; // Trùng lịch
+        }
+        current = current->next;
+    }
+    return false; // Không trùng lịch
+}
+
+// Hàm thêm lớp học vào TKB của sinh viên
+void ThemLH(PNodeSV sv, const TKB& tkbMoi) {
+    if (KiemTraTrungLich(sv->TKBx, tkbMoi)) {
+        cout << "Lớp học mới trùng lịch với một lớp học đã có." << endl;
         return;
     }
-    file_TKB >> tkb.n;
-    tkb.a = new TKB[tkb.n];
-    for (int i = 0; i < tkb.n; i++) {
-        file_TKB >> tkb.a[i].MaLop;
-        file_TKB >> tkb.a[i].data.MaHP;
-        file_TKB >> tkb.a[i].data.TenHP;
-        file_TKB >> tkb.a[i].data.Tinchi;
-        file_TKB >> tkb.a[i].Thu;
-        file_TKB >> tkb.a[i].Start;
-        file_TKB >> tkb.a[i].End;
-        file_TKB >> tkb.a[i].PhongHoc;
-        if (strcmp(tkb.a[i].MaLop, MaLop) == 0) {
-            vitriLop = i;
-        }
+
+    PNodeTKB newCourse = new NodeTKB();
+    newCourse->data = tkbMoi;
+    newCourse->next = sv->TKBx;
+    sv->TKBx = newCourse;
+
+    ofstream file("TKB.txt", ios::app);
+    if (!file.is_open()) {
+        cout << "Không thể mở file!" << endl;
+        return;
     }
-    file_TKB.close();
+
+    file << tkbMoi.data.MaHP << " " << tkbMoi.data.TenHP << " " << tkbMoi.data.Tinchi << " "
+         << tkbMoi.Thu << " " << tkbMoi.Start << " " << tkbMoi.End << " " << tkbMoi.Tuan << " "
+         << tkbMoi.PhongHoc << " " << tkbMoi.Kihoc << " " << tkbMoi.MaLop << endl;
+    file.close();
+
+    cout << "Đã thêm lớp học vào thời khóa biểu của sinh viên." << endl;
 }
 
-// Hàm thêm 1 lớp vào TKB của Sinh viên
-PNodeTKB ThemHP(PNodeSV sv, const TKB& tkbMoi) {
-    if (KiemTraTrungLich(sv->tkb, tkbMoi)) {
-        cout << "Lớp học mới trùng lịch với một lớp học đã có." << endl;
-        return sv->tkb;
-    }
-    PNodeTKB P = new NodeTKB;
-    P->data = tkbMoi;
-    P->next = sv->tkb;
-    sv->tkb = P;
-    cout << "Đã thêm lớp học vào thời khóa biểu của sinh viên." << endl;
-    return sv->tkb;
-}
 // Hàm tìm lớp học theo mã lớp học
-PNodeTKB TimLopHoc(PNodeSV sv, const char* MaLop) {
-    PNodeTKB P = sv->tkb; 
+PNodeTKB TimLopHoc(PNodeSV sv, const char* MaHP) {
+    PNodeTKB P = sv->TKBx;
     while (P != nullptr) {
-        if (strcmp(P->data.MaLop, MaLop) == 0) {
+        if (strcmp(P->data.data.MaHP, MaHP) == 0) {
             return P;
         }
         P = P->next;
@@ -67,14 +59,14 @@ PNodeTKB TimLopHoc(PNodeSV sv, const char* MaLop) {
 }
 
 // Hàm xóa lớp học theo mã lớp học
-void XoaLopHoc(PNodeSV sv, const char* MaLop) {
-    PNodeTKB Q = nullptr; 
-    PNodeTKB P = sv->tkb;
+void XoaLopHoc(PNodeSV sv, const char* MaHP) {
+    PNodeTKB Q = nullptr;
+    PNodeTKB P = sv->TKBx;
 
     while (P != nullptr) {
-        if (strcmp(P->data.MaLop, MaLop) == 0) {
+        if (strcmp(P->data.data.MaHP, MaHP) == 0) {
             if (Q == nullptr) {
-                sv->tkb = P->next;
+                sv->TKBx = P->next;
             } else {
                 Q->next = P->next;
             }
@@ -89,30 +81,72 @@ void XoaLopHoc(PNodeSV sv, const char* MaLop) {
     cout << "Không tìm thấy lớp học cần xóa trong thời khóa biểu của sinh viên." << endl;
 }
 
-void InThoiKhoaBieu(PNodeSV sv) {
-    PNodeTKB P = sv->tkb;
-
-    if (P == nullptr) {
-        cout << "Thời khóa biểu của sinh viên không có môn học nào." << endl;
+// Hàm đọc thời khóa biểu từ file và thêm vào TKB của sinh viên
+void docTKBtuFile(PNodeSV sv) {
+    ifstream file("TKB.txt");
+    if (!file.is_open()) {
+        cout << "Không thể mở file!" << endl;
         return;
     }
 
-    cout << "Thời khóa biểu của sinh viên:" << endl;
-    cout << "--------------------------------------------" << endl;
-    cout << "| MaHP |     TenHP     | Tinchi | Thu | Start | End | Tuan |  PhongHoc  |  Kihoc  |" << endl;
-    cout << "--------------------------------------------" << endl;
+    char MaHP[100];
+    char TenHP[100];
+    int Tinchi;
+    int Thu;
+    int Start;
+    int End;
+    int Tuan;
+    char PhongHoc[100];
+    char Kihoc[100];
+    char MaLop[100];
 
-    while (P != nullptr) {
-        cout << "| " << P->data.data.MaHP;
-        cout << " | " << P->data.data.TenHP;
-        cout << " | " << P->data.data.Tinchi;
-        cout << " | " << P->data.Thu;
-        cout << " | " << P->data.Start;
-        cout << " | " << P->data.End;
-        cout << " | " << P->data.Tuan;
-        cout << " | " << P->data.PhongHoc;
-        cout << " | " << P->data.Kihoc << " |" << endl;
-        P = P->next;
+    while (file >> MaHP >> TenHP >> Tinchi >> Thu >> Start >> End >> Tuan >> PhongHoc >> Kihoc >> MaLop) {
+        TKB tkbMoi;
+        strcpy(tkbMoi.data.MaHP, MaHP);
+        strcpy(tkbMoi.data.TenHP, TenHP);
+        tkbMoi.data.Tinchi = Tinchi;
+        tkbMoi.Thu = Thu;
+        tkbMoi.Start = Start;
+        tkbMoi.End = End;
+        tkbMoi.Tuan = Tuan;
+        strcpy(tkbMoi.PhongHoc, PhongHoc);
+        strcpy(tkbMoi.Kihoc, Kihoc);
+        strcpy(tkbMoi.MaLop, MaLop);
+
+        ThemLH(sv, tkbMoi);
     }
-    cout << "--------------------------------------------" << endl;
+
+    file.close();
+    cout << "Đã thêm các lớp học từ file vào thời khóa biểu của sinh viên." << endl;
+}
+
+// Hàm in ra thời khóa biểu từ file
+void inThoiKhoaBieuTuFile(const char* MaLop) {
+    ifstream file("TKB.txt");
+    if (!file.is_open()) {
+        cout << "Không thể mở file!" << endl;
+        return;
+    }
+
+    char MaHP[100];
+    char TenHP[100];
+    int Tinchi;
+    int Thu;
+    int Start;
+    int End;
+    int Tuan;
+    char PhongHoc[100];
+    char Kihoc[100];
+    char fileMaLop[100];
+
+    cout << "Thời khóa biểu của lớp " << MaLop << ":\n";
+    while (file >> MaHP >> TenHP >> Tinchi >> Thu >> Start >> End >> Tuan >> PhongHoc >> Kihoc >> fileMaLop) {
+        if (strcmp(fileMaLop, MaLop) == 0) {
+            cout << "Mã HP: " << MaHP << ", Tên HP: " << TenHP << ", Tín chỉ: " << Tinchi
+                 << ", Thứ: " << Thu << ", Bắt đầu: " << Start << ", Kết thúc: " << End 
+                 << ", Tuần: " << Tuan << ", Phòng: " << PhongHoc << ", Kì học: " << Kihoc << endl;
+        }
+    }
+
+    file.close();
 }

@@ -1,5 +1,5 @@
 #pragma once
-#include "SinhVien.h"
+//#include "SinhVien.h"
 
 struct HocPhan {
     char MaHP[100];

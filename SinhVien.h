@@ -5,12 +5,14 @@ struct SinhVien {
     long mssv;
     char hoTen[100];
     char email[100];
+    
 };
 
 struct NodeSV {
     SinhVien data;
+    PNodeTKB TKBx;
     NodeSV* next;
-    NodeTKB* tkb;
+    
 };
 
 typedef NodeSV* LinkedListSV;
