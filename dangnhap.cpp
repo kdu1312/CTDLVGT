@@ -1,10 +1,10 @@
 #pragma once
+#include "header.h"
 #include <iostream>
 #include <fstream>
 #include <string>
 #include "SinhVien.h"
-
-using namespace std;
+#include "menudangnhap.h"
 
     int find(const string mssv[], const string pass[], const string& _id, const string& _pass, int n) {
         for (int i = 0; i < n; i++) {
@@ -50,7 +50,7 @@ using namespace std;
             }
             cout << "\n\tSai mat khau hoac tai khoan. Vui long thu lai.\n";
         }
-         void menu1();
+        void menu1();
         return vitri;
     }
 
