@@ -1,5 +1,4 @@
 #pragma once
-#include "HocPhan.h"
 #include "TKB.h"
 
 struct SinhVien {
@@ -11,7 +10,7 @@ struct SinhVien {
 struct NodeSV {
     SinhVien data;
     NodeSV* next;
-    NodeTKB* TKB;
+    NodeTKB* tkb;
 };
 
 typedef NodeSV* LinkedListSV;
