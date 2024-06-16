@@ -1,18 +1,18 @@
 #include "header.h"
 #include "SinhVien.h"
 
-void InitList(LinkedListSV& H) {
+void InitListSV(LinkedListSV& H) {
     H = NULL;
 }
 
-int isEmpty(LinkedListSV H) {
+int isEmptySV(LinkedListSV H) {
     return (H == NULL);
 }
 
 void insertBeginSV(LinkedListSV& H, SinhVien& sv) {
     PNodeSV Q = new NodeSV;
     Q->data = sv;
-    if (isEmpty(H)) {
+    if (isEmptySV(H)) {
         Q->next = NULL;
         H = Q;
     }
@@ -26,7 +26,7 @@ void insertAfterSV(LinkedListSV& H, long mssvtarget, SinhVien& sv) {
     PNodeSV P = searchSV(H, mssvtarget);
     PNodeSV Q = new NodeSV;
     Q->data = sv;
-    if (isEmpty(H)) {
+    if (isEmptySV(H)) {
         Q->next = NULL;
         H = Q;
     }
@@ -42,7 +42,7 @@ void insertBeforeSV(LinkedListSV& H, long mssvtarget, SinhVien& sv) {
     PNodeSV P = searchSV(H, mssvtarget);
     PNodeSV Q = new NodeSV;
     Q->data = sv;
-    if (isEmpty(H)) {
+    if (isEmptySV(H)) {
         Q->next = NULL;
         H = Q;
     }
@@ -67,7 +67,7 @@ PNodeSV searchSV(LinkedListSV H, long mssv) {
 
 void DelectSV (LinkedListSV H, long mssv) {
     PNodeSV P = searchSV(H, mssv);
-    if (isEmpty(H))
+    if (isEmptySV(H))
         cout << "rỗng";
     if (H == P && P->next == NULL) {
         H = NULL;

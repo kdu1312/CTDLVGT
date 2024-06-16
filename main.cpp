@@ -1,7 +1,9 @@
 #include "header.h"
 #include "SinhVien.h"
 #include "HocPhan.h"
-// #include "TKB.h"
+#include "TKB.h"
+#include "menudangnhap.h"
+#include "dangnhap.h"
 
 int main() {
     LinkedListSV SV;
@@ -24,8 +26,9 @@ int main() {
     InsertHPBegin (HP, hp2);
     InsertHPBegin (HP, hp3);
 
-    void menu();
-    
-    
-}
+    menu();
+    if (dangnhap()) {
+        menu1(searchSV(SV, dangnhap()));
+    }
+} 
     

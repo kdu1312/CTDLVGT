@@ -4,4 +4,4 @@
 #include "HocPhan.h"
 
 void menu();
-void menu1(NodeSV* PNodeSV);
+void menu1(PNodeSV P);

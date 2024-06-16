@@ -26,9 +26,9 @@ batdau:
     }
 }
 
-void menu1(NodeSV* PNodeSV) {
+void menu1(PNodeSV P) {
 thaydoi:
-    cout << "\t CHAO MUNG " << PNodeSV->data.mssv << "!" << endl;
+    cout << "\t CHAO MUNG " << P->data.mssv << "!" << endl;
     cout << "\n Nhan phim [2] de them mon hoc vao thoi khoa bieu sinh vien" << endl;
     cout << " Nhan phim [1] de doi mat khau" << endl;
     cout << " Nhan phim [3] de xoa mon hoc khoi thoi khoa bieu sinh vien" << endl;
@@ -75,4 +75,5 @@ thaydoi:
         goto thaydoi;
     }
 }
+
 

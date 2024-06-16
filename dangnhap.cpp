@@ -1,4 +1,3 @@
-#pragma once
 #include "header.h"
 #include <iostream>
 #include <fstream>
@@ -15,6 +14,17 @@
         return -1;
     }
 
+    long convertStringToLong(const string& str) {
+    try {
+        return stol(str); // Chuyển đổi từ string sang long
+    } catch (const invalid_argument& e) {
+        cerr << "Lỗi: " << e.what() << endl;
+        return 0; // Trả về giá trị mặc định hoặc thông báo lỗi tùy ý
+    } catch (const out_of_range& e) {
+        cerr << "Lỗi: " << e.what() << endl;
+        return 0; // Trả về giá trị mặc định hoặc thông báo lỗi tùy ý
+    }
+}
     int dangnhap() {
         int vitri;
         int n = 0; // Vị trí của tài khoản
@@ -50,8 +60,15 @@
             }
             cout << "\n\tSai mat khau hoac tai khoan. Vui long thu lai.\n";
         }
-        void menu1();
-        return vitri;
-    }
+    char tieptuc;
+	cin >> tieptuc;
+	while (tieptuc != 'a') {
+		system("cls");
+		cout << "Nhap 'a' de tiep tuc: ";
+		cin >> tieptuc;
+	}
+	system("cls");
+	return convertStringToLong(_id);
+}
 
 
