@@ -53,22 +53,14 @@
             cout << "Nhap mat khau: ";
             cin >> _pass;
             int index = find(mssv, pass, _id, _pass, n);
+            system("cls");
             if (index != -1) {
                 vitri = index; // Kiểm tra MSSV và mật khẩu nhập vào với file có sẵn
-                cout << "\n\tDang nhap thanh cong, nhan phim 'a' de tiep tuc: ";
+                cout << "\n\tDang nhap thanh cong";
                 break;
             }
             cout << "\n\tSai mat khau hoac tai khoan. Vui long thu lai.\n";
         }
-    char tieptuc;
-	cin >> tieptuc;
-	while (tieptuc != 'a') {
-		system("cls");
-		cout << "Nhap 'a' de tiep tuc: ";
-		cin >> tieptuc;
-	}
-	system("cls");
+    
 	return convertStringToLong(_id);
 }
-
-
