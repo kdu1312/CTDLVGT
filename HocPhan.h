@@ -31,4 +31,3 @@ PNodeHP searchHP(LinkedListHP H, const char* MaHP);
 
 void display(LinkedListHP H);
 
-

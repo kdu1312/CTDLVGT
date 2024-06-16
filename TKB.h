@@ -22,13 +22,13 @@ typedef NodeTKB* PNodeTKB;
 
 
 // // Hàm thêm lớp học vào TKB của sinh viên
-// PNodeTKB ThemHP(PNodeSV sv, const TKB& tkbMoi);
+PNodeTKB ThemHP(PNodeSV sv, const TKB& tkbMoi);
 
 // // Hàm xóa 1 lớp theo mã lớp học
-// void XoaLopHoc(PNodeSV sv, const char* MaLop);
+void XoaLopHoc(PNodeSV sv, const char* MaLop);
 
 // // Hàm tìm lớp theo mã lớp học
-// PNodeTKB TimLopHoc(PNodeSV sv, const char* MaLop);
+PNodeTKB TimLopHoc(PNodeSV sv, const char* MaLop);
 
 // // Hàm in thời khóa biểu
-// void inThoiKhoaBieu(PNodeSV sv);
+void inThoiKhoaBieu(PNodeSV sv);
