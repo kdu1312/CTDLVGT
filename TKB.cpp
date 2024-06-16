@@ -2,20 +2,15 @@
 #include "TKB.h"
 #include "SinhVien.h"
 
-// Kiểm tra xem hai khoảng thời gian có trùng nhau hay không
-bool isOverlapping(int newStart, int newEnd, int existingStart, int existingEnd) {
-    return (newStart < existingEnd && newEnd > existingStart);
-}
-
 // Hàm kiểm tra xem lớp học có trùng thời gian hay không
-bool KiemTraTrungLich(PNodeTKB head, const TKB& tkbMoi) {
-    PNodeTKB current = head;
-    while (current != nullptr) {
-        if (current->data.Thu == tkbMoi.Thu &&
-            isOverlapping(tkbMoi.Start, tkbMoi.End, current->data.Start, current->data.End)) {
+bool KiemTraTrungLich(PNodeTKB tkb, const TKB& tkbMoi) {
+    PNodeTKB P = tkb;
+    while (P != nullptr) {
+        if (P->data.Thu == tkbMoi.Thu &&
+            tkbMoi.Start < tkb->data.End && tkbMoi.End > tkb->data.Start) {
             return true; // Trùng lịch
         }
-        current = current->next;
+        P = P->next;
     }
     return false; // Không trùng lịch
 }
@@ -27,10 +22,10 @@ void ThemLH(PNodeSV sv, const TKB& tkbMoi) {
         return;
     }
 
-    PNodeTKB newCourse = new NodeTKB();
-    newCourse->data = tkbMoi;
-    newCourse->next = sv->TKBx;
-    sv->TKBx = newCourse;
+    PNodeTKB Q = new NodeTKB();
+    Q->data = tkbMoi;
+    Q->next = sv->TKBx;
+    sv->TKBx = Q;
 
     ofstream file("TKB.txt", ios::app);
     if (!file.is_open()) {

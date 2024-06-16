@@ -1,5 +1,6 @@
 #pragma once
 #include "TKB.h"
+#include "header.h"
 
 struct SinhVien {
     long mssv;
